@@ -1,0 +1,11 @@
+# PyCharm templates
+*.idea/
+
+# python templates
+__pycache__/
+
+# project templates
+*.log
+test*
+venv/
+private/
