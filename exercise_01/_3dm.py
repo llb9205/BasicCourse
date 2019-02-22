@@ -1,8 +1,10 @@
+# 模块名、类名、函数名、变量名均不能以数字开头，需要添加“_”
+
 import requests
 from bs4 import BeautifulSoup
 
 
-class GameResSpider:
+class _3dmSpider:
     def start(self):
         rsp = requests.get('https://www.3dmgame.com/news/')
         soup = BeautifulSoup(rsp.text, 'html.parser')
@@ -39,5 +41,5 @@ class GameResSpider:
 
 
 if __name__ == '__main__':
-    spider = GameResSpider()
+    spider = _3dmSpider()
     spider.start()
