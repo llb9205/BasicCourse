@@ -1,9 +1,8 @@
-# 模块名、类名、函数名、变量名均不能以数字开头，需要添加“_”
-
 import requests
 from bs4 import BeautifulSoup
 
 
+# 模块名、类名、函数名、变量名均不能以数字开头，需要添加“_”
 class _3dmSpider:
     def start(self):
         rsp = requests.get('https://www.3dmgame.com/news/')
