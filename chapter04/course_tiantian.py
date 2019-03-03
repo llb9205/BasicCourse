@@ -1,3 +1,5 @@
+"""使用csv文件存储数据"""
+
 import requests
 from bs4 import BeautifulSoup
 from urllib.parse import urljoin
@@ -25,6 +27,7 @@ class TianTianSpider:
             rsp = requests.get(url)
             soup = BeautifulSoup(rsp.text, 'lxml')
             videos = []
+
             # 只有第一页才有top3列表，但是其他页面寻找<div class="ranktop3">标签时返回空列表，不影响逻辑
             for item in soup.find_all('div', class_='ranktop3'):
                 a_node = item.find('div', class_='mjtit').find('a')
@@ -35,6 +38,7 @@ class TianTianSpider:
                     'category': item.find('div', class_='mjinfo').text.split('/')[0].strip()
                 }
                 videos.append(video)
+
             for tr_node in soup.find('table', class_='latesttable').find_all('tr', class_='Scontent1'):
                 a_node = tr_node.find('a')
                 video = {
@@ -44,6 +48,7 @@ class TianTianSpider:
                     'category': tr_node.find_all('td')[2].text.strip(),
                 }
                 videos.append(video)
+
             for tr_node in soup.find('table', class_='latesttable').find_all('tr', class_='Scontent'):
                 a_node = tr_node.find('a')
                 video = {

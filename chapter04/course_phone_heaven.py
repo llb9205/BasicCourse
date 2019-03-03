@@ -1,11 +1,18 @@
-"""全量采集，函数抽取"""
+"""使用mongodb存储数据"""
 
 import requests
 from bs4 import BeautifulSoup
 from urllib.parse import urljoin
+from pymongo import MongoClient
 
 
 class PhoneHeavenSpider:
+    def __init__(self):
+        client = MongoClient(host='127.0.0.1', port=27017)
+        database = client.get_database('spider')
+        # 如果mongodb不存在phone_heaven集合，会自动新建该集合
+        self.coll = database.get_collection('phone_heaven')
+
     def start(self):
         self.crawl_index(1)
 
@@ -31,7 +38,7 @@ class PhoneHeavenSpider:
                 max_page = int(li_node.text.strip())  # 拿到的text是字符串类型，需要转为int类型
                 for new_page in range(2, max_page + 1):  # 2 ~ max_page+1页，不包含第max_page+1
                     self.crawl_index(new_page)  # 继续调用自身，写上return避免迭代过多导致异常
-        except:
+        except Exception as error:
             pass
 
     # 抓取新闻详情数据
@@ -62,6 +69,8 @@ class PhoneHeavenSpider:
                 'article': article,
                 'images': images,
             }
+
+            self.coll.insert_one(data)
             print('第{}页新闻：'.format(page), data)
         except:
             pass
