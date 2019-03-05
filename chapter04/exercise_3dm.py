@@ -14,7 +14,7 @@ class _3dmSpider:
     def crawl_index(self, page):
         try:
             url = f'https://www.3dmgame.com/news_all_{page}/'
-            rsp = requests.get(url)
+            rsp = requests.get(url, timeout=30)  # 设置超时时间，如果请求超时会报错
             soup = BeautifulSoup(rsp.text, 'lxml')
             for li_node in soup.find('ul', class_='list').find_all('li'):
                 a_node = li_node.find('a', class_='selectarcpost')
@@ -30,7 +30,7 @@ class _3dmSpider:
 
     def crawl_detail(self, url):
         try:
-            rsp = requests.get(url)
+            rsp = requests.get(url, timeout=30)
             rsp.encoding = 'utf-8'
             soup = BeautifulSoup(rsp.text, 'html.parser')
             top_node = soup.find('div', class_='news_warp_top')
