@@ -17,7 +17,7 @@ class HuXiuSpider:
     def start(self):
         try:
             url = 'https://www.huxiu.com/'
-            rsp = requests.get(url, headers=self.headers)
+            rsp = requests.get(url, headers=self.headers, timeout=30)
             soup = BeautifulSoup(rsp.text, 'lxml')
             for h2_node in soup.find('div', class_='mod-info-flow').find_all('h2'):
                 href = h2_node.find('a')['href']
@@ -41,7 +41,7 @@ class HuXiuSpider:
                 'last_dateline': int(time.time()),  # 10位时间戳。以后看到15开头、10位或13位整数，就要注意这是不是时间戳
             }
             url = 'https://www.huxiu.com/v2_action/article_list'
-            rsp = requests.post(url=url, data=req_data, headers=self.headers)  # 发送post请求，带上表单数据
+            rsp = requests.post(url=url, data=req_data, headers=self.headers, timeout=30)  # 发送post请求，带上表单数据
             html = rsp.json()['data']  # requsts返回的对象内置了json()函数，可以方便的转成字典
             soup = BeautifulSoup(html, 'lxml')
             for h2_node in soup.find_all('h2'):
@@ -60,7 +60,7 @@ class HuXiuSpider:
     # 抓取新闻详情
     def crawl_detail(self, url):
         try:
-            rsp = requests.get(url, headers=self.headers)
+            rsp = requests.get(url, headers=self.headers, timeout=30)
             soup = BeautifulSoup(rsp.text, 'lxml')
             title = soup.find('div', class_='article-wrap').find('h1', class_='t-h1').text.strip()
             author = soup.find('span', class_='author-name').text.strip()
